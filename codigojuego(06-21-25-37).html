@@ -1,0 +1,112 @@
+<!DOCTYPE html> <!-- 1: Indica al navegador que el documento está en HTML5 -->
+<html lang="es"> <!-- 2: Etiqueta raíz del documento; lang="es" especifica que el contenido está en español -->
+<head> <!-- 3: Inicio del encabezado; aquí van metadatos, título y estilos -->
+  <meta charset="UTF-8"> <!-- 4: Define la codificación de caracteres (UTF-8 es estándar y soporta caracteres especiales) -->
+  <title>¡A que no Adivinas!</title> <!-- 5: Texto que aparecerá en la pestaña del navegador -->
+  <style> <!-- 6: Inicio del bloque de estilos CSS embebido -->
+    /* 7: Estilos globales: aquí corregí la selección que faltaba en tu original para aplicar al body */
+    body { /* 8: Selecciona el elemento <body> para aplicar estilos generales */
+      font-family: "Comic Sans MS", sans-serif; /* 9: Define la tipografía principal y una de reserva */
+      background: linear-gradient(to right, #74ebd5, #ACB6E5); /* 10: Fondo degradado de izquierda a derecha */
+      text-align: center; /* 11: Centra horizontalmente el contenido del body */
+      margin-top: 100px; /* 12: Separa el contenido de la parte superior de la ventana */
+      color: #333; /* 13: Color de texto por defecto (gris oscuro) */
+    }
+
+    h1 { /* 14: Estilos para los encabezados <h1> */
+      color: #2e2e2e; /* 15: Color del texto del título */
+    }
+
+    input { /* 16: Estilos para los campos de entrada <input> */
+      padding: 10px; /* 17: Espacio interno dentro del input */
+      width: 60px; /* 18: Ancho fijo del input (útil para números cortos) */
+      font-size: 20px; /* 19: Tamaño de la fuente dentro del input */
+      text-align: center; /* 20: Centra el texto escrito en el input */
+    }
+
+    button { /* 21: Estilos para todos los botones <button> */
+      padding: 10px 20px; /* 22: Espacio interno vertical y horizontal */
+      font-size: 16px; /* 23: Tamaño de la fuente del botón */
+      margin-left: 10px; /* 24: Margen izquierdo para separarlo de elementos previos */
+      border: none; /* 25: Sin borde por defecto */
+      border-radius: 5px; /* 26: Bordes redondeados */
+      background-color: #4CAF50; /* 27: Color de fondo del botón (verde) */
+      color: white; /* 28: Color del texto del botón */
+      cursor: pointer; /* 29: Cambia el cursor al pasar por encima (indica que es clicable) */
+    }
+
+    button:hover { /* 30: Pseudo-clase para el efecto al pasar el cursor */
+      background-color: #45a048; /* 31: Color ligeramente más oscuro al hacer hover */
+    }
+
+    #mensaje { /* 32: Estilos específicos para el elemento con id="mensaje" */
+      font-size: 25px; /* 33: Tamaño de letra del mensaje */
+      margin-top: 20px; /* 34: Separación arriba del mensaje */
+    }
+  </style> <!-- 35: Fin del bloque de estilos -->
+</head> <!-- 36: Fin del encabezado -->
+<body> <!-- 37: Inicio del cuerpo del documento (lo que verá el usuario) -->
+  <h1>¡A que no Adivinas! </h1> <!-- 38: Título principal visible en la página -->
+  <p>Estoy pensando en un número del 1 al 15</p> <!-- 39: Indicaciones para el usuario -->
+
+  <input type="number" id="numero" min="1" max="15"> <!-- 40: Campo donde el usuario ingresa su intento; type="number" muestra controles numéricos -->
+  <button onclick="verificar()">Adivinar</button> <!-- 41: Botón que llama a la función verificar() cuando el usuario hace clic -->
+
+  <p id="mensaje"></p> <!-- 42: Párrafo vacío donde se mostrará la retroalimentación (mensajes al usuario) -->
+  
+  <!-- 43: Enlaces de navegación: cada <a> envuelve un botón para llevar a otra página.
+       Observación: Evita tener atributos onclick en botones envueltos por <a> sin cerrar correctamente.
+       En el HTML original había etiquetas abiertas sin cerrar; aquí las cierro correctamente. -->
+  <a href="proyecto(06-21-25-37).html"><button class="translate-btn">salir de la pagina y volver</button></a>
+  <a href="proyecto(06-21-25-37).html"><button onclick="history.back()">volver (history.back)</button></a>
+
+  <script> <!-- 44: Inicio del bloque de código JavaScript -->
+    // 45: Generar un número aleatorio entre 1 y 15 y guardarlo en la variable numeroSecreto
+    let numeroSecreto = Math.floor(Math.random() * 15) + 1;
+    // Math.random() devuelve un número entre 0 (inclusive) y 1 (exclusive).
+    // Multiplicamos por 15 -> rango [0,15). Math.floor() da enteros 0..14. +1 -> 1..15.
+
+    let intentos = 0; // 46: Contador de intentos que el usuario ha hecho
+
+    // 47: Definición de la función verificar() que se ejecuta cuando el usuario hace clic en "Adivinar"
+    function verificar() {
+      // 48: Obtener el valor del input con id="numero" y convertirlo a entero con parseInt
+      const valor = parseInt(document.getElementById("numero").value);
+      // 49: Obtener la referencia al elemento donde mostraremos mensajes
+      const mensaje = document.getElementById("mensaje");
+      // 50: Incrementar el contador de intentos cada vez que se pulsa el botón
+      intentos++;
+
+      // 51: Validación: si el valor no es un número válido (NaN), pedir entrada válida
+      if (isNaN(valor)) {
+        mensaje.textContent = "Por favor, escribe un número válido.";
+        mensaje.style.color = "#000000"; // 52: Color negro para este mensaje de error
+      } 
+      // 53: Validación: número fuera del rango permitido
+      else if (valor < 1 || valor > 15) {
+        mensaje.textContent = "El número debe estar entre 1 y 15.";
+        mensaje.style.color = "#000000";
+      } 
+      // 54: Caso ganador: el usuario adivinó el número secreto
+      else if (valor === numeroSecreto) {
+        mensaje.textContent = ` ¡Felicidades! Adivinaste el número ${numeroSecreto} en ${intentos} intentos.`;
+        mensaje.style.color = "#00FF00"; // 55: Mensaje de éxito en verde brillante
+        // 56: Opcional: podrías reiniciar el juego aquí creando un nuevo numeroSecreto y poniendo intentos a 0.
+        // Por ejemplo:
+        // numeroSecreto = Math.floor(Math.random() * 15) + 1;
+        // intentos = 0;
+      } 
+      // 57: Si el valor es menor que el número secreto, avisamos que el secreto es mayor
+      else if (valor < numeroSecreto) {
+        mensaje.textContent = "El número secreto es más grande.";
+        mensaje.style.color = "#FFC0CB"; // 58: Mensaje en color rosado
+      } 
+      // 59: Si no es ninguno de los anteriores, entonces el valor es mayor que el número secreto
+      else {
+        mensaje.textContent = "El número secreto es más pequeño.";
+        mensaje.style.color = "#800080"; // 60: Mensaje en color púrpura
+      }
+    } // 61: Fin de la función verificar()
+  </script> <!-- 62: Fin del bloque JavaScript -->
+</body> <!-- 63: Fin del cuerpo -->
+</html> <!-- 64: Fin del documento HTML -->
